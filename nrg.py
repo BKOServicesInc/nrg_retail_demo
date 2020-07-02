@@ -125,7 +125,7 @@ def run_script_onClick_annotate(n_clicks, rows, derived_virtual_selected_rows):
     # a temporary text file to contain the data that is to be streamed to prodigy
     fh = open('data.txt', "r")
     # run the ner.correct command to annotate the records
-    system_cmd = 'python -m prodigy textcat.manual trial_dataset2 data.txt --loader txt --label YES,NO --exclusive'
+    system_cmd = 'python3 -m prodigy textcat.manual trial_dataset2 data.txt --loader txt --label YES,NO --exclusive'
     os.system(system_cmd)
     return ''
 # Callback for embedding the prodigy page when 'Annotate' button is hit
@@ -139,16 +139,16 @@ def run_script_onClick_embed(n_clicks1, n_clicks2, selected_rows):
     if int(n_clicks1) <= int(n_clicks2):
         cmd_kill.kill()
         time.sleep(2)
-        while socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect_ex(('localhost', 8080)) != 0:
+        while socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect_ex(('0.0.0.0', 8080)) != 0:
             time.sleep(3)
             pass
         # current_time = str(int(round(time.time() * 1000)))
-        return [], html.Iframe(src='http://localhost:8080/?s=' + str(n_clicks2), width=1000, height=600) # Iframe layout to embed prodigy
+        return [], html.Iframe(src='http://0.0.0.0:8080/?s=' + str(n_clicks2), width=1000, height=600) # Iframe layout to embed prodigy
     else:
         # print(current_time)
         # try:
         if n_clicks2 > 0:
-            return [i for i in range(input_file_len)], html.Iframe(src='http://localhost:8080/?s=' + str(n_clicks2), width=1000, height=600)
+            return [i for i in range(input_file_len)], html.Iframe(src='http://0.0.0.0:8080/?s=' + str(n_clicks2), width=1000, height=600)
         else:
             return [i for i in range(input_file_len)], ''
 # run the server
